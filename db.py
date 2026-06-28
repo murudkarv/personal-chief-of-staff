@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from enum import Enum
+from typing import Optional
 
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
@@ -21,6 +22,7 @@ class NoteType(str, Enum):
     TASK = "TASK"
     OBSERVATION = "OBSERVATION"
     DECISION = "DECISION"
+    CONSTRAINT = "CONSTRAINT"
 
 
 class NoteCreate(BaseModel):
@@ -32,5 +34,17 @@ class NoteCreate(BaseModel):
 
 
 class NoteResponse(NoteCreate):
+    id: int
+    created_at: datetime
+
+
+class ReflectionCreate(BaseModel):
+    energy: int = Field(..., ge=1, le=5)
+    wins: Optional[str] = None
+    failures: Optional[str] = None
+    insight: Optional[str] = None
+
+
+class ReflectionResponse(ReflectionCreate):
     id: int
     created_at: datetime
